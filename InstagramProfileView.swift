@@ -30,7 +30,7 @@ struct InstagramProfileView: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
-                    .background(.instagramBlue)
+                    .background(.primaryBlue)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
             }
             .padding(.horizontal, 34)
@@ -38,7 +38,7 @@ struct InstagramProfileView: View {
             
             Button("계정 전환") {}
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(.instagramBlue)
+                .foregroundStyle(.primaryBlue)
                 .padding(.top, 30)
             
             Spacer()
@@ -46,7 +46,7 @@ struct InstagramProfileView: View {
             HStack(alignment: .center, spacing: 11) {
                 Text("계정이 없으신가요?")
                     .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(.black.opacity(0.4))
+                    .foregroundStyle(.gray300)
                 
                 Button {} label: {
                     Text("회원가입하기.")
