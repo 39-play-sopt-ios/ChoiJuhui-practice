@@ -14,8 +14,11 @@ struct InstagramProfileView: View {
                 .padding(.top, 193)
             
             Image(.instagramProfile)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 85, height: 85)
+                .clipShape(Circle())
                 .padding(.top, 65)
-            
             
             Text("moamoa")
                 .font(.system(size: 14, weight: .semibold))
@@ -28,9 +31,7 @@ struct InstagramProfileView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
                     .background(.instagramBlue)
-                    .clipShape(
-                        RoundedRectangle(cornerRadius: 5)
-                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
             }
             .padding(.horizontal, 34)
             .padding(.top, 12)
