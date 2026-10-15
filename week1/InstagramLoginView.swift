@@ -40,12 +40,9 @@ struct InstagramLoginView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 63)
+                
                 Spacer()
             }
         }
     }
-}
-
-#Preview {
-    InstagramLoginView()
 }
