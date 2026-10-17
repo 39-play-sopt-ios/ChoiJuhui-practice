@@ -21,7 +21,3 @@ struct ChatListView: View {
         .background(.white)
     }
 }
-
-#Preview {
-    ChatListView()
-}

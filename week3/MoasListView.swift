@@ -32,7 +32,3 @@ struct MoasListView: View {
         }
     }
 }
-
-#Preview {
-    MoasListView()
-}
