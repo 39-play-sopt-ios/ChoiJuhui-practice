@@ -1,0 +1,56 @@
+# ===== macOS =====
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ===== Xcode =====
+## User settings
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+## Build
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# ===== Swift Package Manager =====
+.build/
+.swiftpm/
+# Package.resolved는 팀원 간 버전 고정을 위해 커밋하는 걸 권장
+# Package.resolved
+
+# ===== CocoaPods (사용 시) =====
+Pods/
+
+# ===== Carthage (사용 시) =====
+Carthage/Build/
+Carthage/Checkouts/
+
+# ===== fastlane (사용 시) =====
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# ===== Secrets =====
+# BASE_URL, API 키 등을 담은 설정 파일
+*.xcconfig
+!*.example.xcconfig
+Secrets.swift
+GoogleService-Info.plist
+
+# ===== Editors =====
+.vscode/
+.idea/
+*.swp
