@@ -94,7 +94,3 @@ struct PostSignUpView: View {
         }
     }
 }
-
-#Preview {
-    PostSignUpView()
-}
