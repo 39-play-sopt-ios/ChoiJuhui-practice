@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InstagramFeedView: View {
-    @State private var posts: [PostModel] = examplePosts
+    @State private var viewModel = InstagramFeedViewModel()
     
     var body: some View {
         ScrollView {
@@ -18,7 +18,7 @@ struct InstagramFeedView: View {
                     .scaledToFill()
                     .frame(width: 107, height: 24)
                 
-                ForEach($posts) { $post in
+                ForEach(viewModel.examplePosts) { post in
                     PostCardView(
                         profileImage: Image(post.profileImageName),
                         username: post.username,
@@ -27,14 +27,19 @@ struct InstagramFeedView: View {
                         likesText: post.likesText,
                         caption: post.caption,
                         timeText: post.timeText,
-                        isLiked: $post.isLiked
+                        isLiked: post.isLiked,
+                        onLikeTapped: {
+                            viewModel.toggleLike(id: post.id)
+                        }
                     )
                 }
+                
+                Spacer()
             }
         }
     }
 }
 
-//#Preview {
-//    InstagramFeedView()
-//}
+#Preview {
+    InstagramFeedView()
+}

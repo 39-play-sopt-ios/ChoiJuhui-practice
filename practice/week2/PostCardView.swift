@@ -16,7 +16,8 @@ struct PostCardView: View {
     let caption: String
     let timeText: String
     
-    @Binding var isLiked: Bool
+    var isLiked: Bool
+    var onLikeTapped: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -39,7 +40,7 @@ struct PostCardView: View {
     private var actionIcons: some View {
         HStack(spacing: 18) {
             Button {
-                isLiked.toggle()
+                onLikeTapped()
             } label: {
                 Image(isLiked ? "Like_fill" : "Like")
             }
