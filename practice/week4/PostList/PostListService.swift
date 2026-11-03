@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class PostListService {
     static let shared = PostListService()
     
