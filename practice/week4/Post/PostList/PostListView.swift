@@ -100,9 +100,3 @@ struct PostListView: View {
         isFocused = false
     }
 }
-
-#Preview {
-    let _ = AuthorizationStore.shared.save("20001208")
-    let _ = AuthorizationStore.shared.saveNickname("주희")
-    PostListView()
-}
