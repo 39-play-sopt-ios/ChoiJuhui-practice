@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PostSignUpView: View {
     @State private var viewModel = SignupViewModel()
+    let onFinish: () -> Void
 
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
@@ -63,5 +64,10 @@ struct PostSignUpView: View {
         .padding(.horizontal, 24)
         .padding(.top, 88)
         .background(.white)
+        .contentShape(.rect)
+        .onTapGesture {
+            guard viewModel.authorizationCode != nil else { return }
+            onFinish()
+        }
     }
 }
