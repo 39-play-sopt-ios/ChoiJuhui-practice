@@ -8,20 +8,16 @@
 import SwiftUI
 
 struct PostSignUpView: View {
-    @State private var part = ""
-    @State private var name = ""
-    @State private var authorizationCode = ""
-    @State private var isLoading = false
-    @State private var errorMessage = ""
+    @State private var viewModel = SignupViewModel()
 
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
             Group {
-                TextField("web / ios / android", text: $part)
+                TextField("web / ios / android", text: $viewModel.part)
 
-                TextField("이름을 입력해주세요", text: $name)
+                TextField("이름을 입력해주세요", text: $viewModel.name)
             }
-            .font(.custom("Pretendard-Medium", size: 18))
+            .font(.m18)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .padding(.horizontal, 16)
@@ -32,36 +28,33 @@ struct PostSignUpView: View {
             }
 
             Button {
-                Task {
-                    await signupButtonDidTap()
-                }
+                Task { await viewModel.requestCode() }
             } label: {
-                Text(isLoading ? "발급 중…" : "코드 발급")
-                    .font(.custom("Pretendard-SemiBold", size: 14))
+                Text(viewModel.isLoading ? "발급 중…" : "코드 발급")
+                    .font(.sb14)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 49)
                     .background(Color(.black), in: RoundedRectangle(cornerRadius: 12))
-
             }
-            .disabled(isLoading)
+            .disabled(viewModel.isLoading)
             .padding(.top, 8)
 
             Spacer()
 
-            if !authorizationCode.isEmpty {
+            if let code = viewModel.authorizationCode {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("발급받은 인증 코드")
-                        .font(.custom("Pretendard-SemiBold", size: 14))
-                    Text(authorizationCode)
-                        .font(.custom("Pretendard-Bold", size: 28))
+                        .font(.sb14)
+                    Text(code)
+                        .font(.b28)
                         .textSelection(.enabled)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 24)
             }
 
-            if !errorMessage.isEmpty {
+            if let errorMessage = viewModel.errorMessage {
                 Text(errorMessage)
                     .foregroundStyle(.red)
                     .padding(.bottom, 24)
@@ -70,27 +63,5 @@ struct PostSignUpView: View {
         .padding(.horizontal, 24)
         .padding(.top, 88)
         .background(.white)
-    }
-
-    private func signupButtonDidTap() async {
-        guard !isLoading else { return }
-
-        isLoading = true
-        authorizationCode = ""
-        errorMessage = ""
-        defer { isLoading = false }
-
-        do {
-            let response = try await SignupService.shared.postSignup(part: part)
-            try Task.checkCancellation()
-
-            guard let code = response.data?.authorizationCode else {
-                throw NetworkError.responseError
-            }
-            authorizationCode = code
-        } catch is CancellationError {
-        } catch {
-            errorMessage = error.localizedDescription
-        }
     }
 }
