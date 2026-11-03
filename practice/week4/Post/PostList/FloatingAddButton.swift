@@ -15,7 +15,7 @@ struct FloatingAddButton: View {
             Image(.shape)
                 .foregroundStyle(.white)
                 .frame(width: 60, height: 60)
-                .background(.systemRed, in: .circle)
+                .background(.networkRed, in: .circle)
         }
     }
 }
