@@ -14,13 +14,25 @@ struct PostListView: View {
     var body: some View {
         VStack(spacing: 16) {
             searchBar
+            
             ScrollView {
                 LazyVStack(spacing: 16) {
                     ForEach(viewModel.posts) { post in
                         PostCardView(post: post)
+                            .onTapGesture {
+                                viewModel.requestEdit(post)
+                            }
+                            .onLongPressGesture {
+                                viewModel.requestDelete(post)
+                            }
                             .onAppear {
                                 Task { await viewModel.loadMoreIfNeeded(current: post) }
                             }
+                    }
+                    
+                    if viewModel.isLoading && !viewModel.posts.isEmpty {
+                        ProgressView()
+                            .padding(.vertical, 16)
                     }
                 }
             }
@@ -28,11 +40,28 @@ struct PostListView: View {
             .refreshable { await viewModel.loadFirstPage() }
         }
         .overlay(alignment: .bottomTrailing) {
-            FloatingAddButton { }
+            FloatingAddButton {
+                viewModel.showCreateSheet()
+            }
                 .padding(.bottom, 31)
         }
         .padding(.horizontal, 16)
         .task { await viewModel.loadFirstPage() }
+        .onChange(of: viewModel.keyword) {
+            viewModel.keywordDidChange()
+        }
+        .sheet(item: $viewModel.editorMode) { mode in
+            PostEditorSheet(mode: mode) { result in
+                Task { await viewModel.didFinishEditor(result) }
+            }
+        }
+        .confirmAlert(
+            item: $viewModel.deleteTarget,
+            message: "게시글을 삭제할까요?",
+            confirmTitle: "삭제"
+        ) { post in
+            Task { await viewModel.delete(post) }
+        }
     }
     
     private var searchBar: some View {
@@ -70,4 +99,10 @@ struct PostListView: View {
         Task { await viewModel.search() }
         isFocused = false
     }
+}
+
+#Preview {
+    let _ = AuthorizationStore.shared.save("20001208")
+    let _ = AuthorizationStore.shared.saveNickname("주희")
+    PostListView()
 }
