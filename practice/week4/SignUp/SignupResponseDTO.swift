@@ -7,13 +7,6 @@
 
 import Foundation
 
-struct SignupResponseDTO: Decodable {
-    let isSuccess: Bool?
-    let code: String?
-    let message: String?
-    let data: AuthorizationCodeData?
-    
-    struct AuthorizationCodeData: Decodable {
-        let authorizationCode: String?
-    }
+struct AuthorizationCodeResponseDTO: Decodable {
+    let authorizationCode: String
 }

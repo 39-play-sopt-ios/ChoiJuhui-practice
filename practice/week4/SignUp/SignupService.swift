@@ -7,54 +7,18 @@
 
 import Foundation
 
-final class SignupService {
-    static let shared = SignupService()
+protocol SignupServicing {
+    func postSignup(part: String) async throws -> AuthorizationCodeResponseDTO
+}
+
+struct SignupService: SignupServicing {
+    private let client: APIClient
     
-    private init() {}
-    
-    private func makeRequestBody(part: String) throws -> Data {
-        do {
-            return try JSONEncoder().encode(SignupRequestDTO(part: part))
-        } catch {
-            throw NetworkError.requestEncodingError
-        }
+    init(client: APIClient = .shared) {
+        self.client = client
     }
     
-    private func makeRequest(body: Data) throws -> URLRequest {
-        guard let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String,
-              let url = URL(string: baseURL) else {
-            throw NetworkError.urlError
-        }
-        
-        var request = URLRequest(
-            url: url.appending(path: "/api/v1/members/authorization-code")
-        )
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        request.httpBody = body
-        
-        return request
-    }
-    
-    func postSignup(part: String) async throws -> SignupResponseDTO {
-        let body = try makeRequestBody(part: part)
-        let request = try makeRequest(body: body)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NetworkError.responseError
-        }
-        
-        guard (200..<300).contains(httpResponse.statusCode) else {
-            throw NetworkError(statusCode: httpResponse.statusCode)
-        }
-        
-        do {
-            return try JSONDecoder().decode(SignupResponseDTO.self, from: data)
-        } catch {
-            throw NetworkError.responseDecodingError
-        }
+    func postSignup(part: String) async throws -> AuthorizationCodeResponseDTO {
+        try await client.request(SignupEndpoint.authorizationCode(.init(part: part)))
     }
 }
