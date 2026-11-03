@@ -27,7 +27,9 @@ extension Font {
 
 extension Font {
     static let m18 = pretendard(.medium, size: 18)
-    
+    static let sb14 = pretendard(.semiBold, size: 14)
+    static let b28 = pretendard(.bold, size: 28)
+
     static let head1 = pretendard(.semiBold, size: 28)
     static let head2 = pretendard(.semiBold, size: 23)
     static let head3 = pretendard(.semiBold, size: 20)
